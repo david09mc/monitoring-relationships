@@ -28,7 +28,6 @@ namespace graphvisualization
         static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate HandlerRoutine, bool Add);
         delegate Boolean ConsoleCtrlDelegate(uint CtrlType);
 
-        public static string _personAtribute { get; set; } = "nombre";
         Dictionary<string, Person> _peopleDict = new Dictionary<string, Person>();
         List<string> _peopleList = new List<string>();
         private Image _imgOriginal;
@@ -130,7 +129,7 @@ namespace graphvisualization
             using (var session = driver.Session())
             {
                 var g = new AdjacencyGraph<string, TaggedEdge<string, string>>();
-
+                
                 result = session.Run($"MATCH (n:Profesor) " +
                     $"RETURN n.nombre AS nombre, n.mac AS mac, n.area AS area, n.asignatura AS asignatura");
                 foreach (var record in result)
@@ -174,7 +173,50 @@ namespace graphvisualization
 
                 }
 
-                result = session.Run($"MATCH ((a)-[r:CERCA_DE{{hora:'{hora}'}}]->(b)) RETURN a.nombre AS nombre1, r.rssi AS rssi, r.hora AS hora, b.nombre AS nombre2");
+                string atributos = "";
+                if (!string.IsNullOrWhiteSpace(tbEdad.Text)) 
+                    atributos += $"edad: '{tbEdad.Text}',";
+                
+                if (!string.IsNullOrWhiteSpace(tbExtroversion.Text))
+                    atributos += $"extraversion: '{tbExtroversion.Text}',";
+
+                if (!string.IsNullOrWhiteSpace(tbNota.Text))
+                    atributos += $"nota: '{tbNota.Text}',";
+
+                if (!string.IsNullOrWhiteSpace(cbGenero.Text))
+                    atributos += $"genero: '{cbGenero.Text}',";
+
+                if (!string.IsNullOrWhiteSpace(cbAsistencia.Text))
+                    atributos += $"asistencia: '{cbAsistencia.Text}',";
+
+                if (!string.IsNullOrWhiteSpace(cbDiasEstudio.Text))
+                    atributos += $"dias_estudio: '{cbDiasEstudio.Text}',";
+
+                if (!string.IsNullOrWhiteSpace(cbHorasEstudio.Text))
+                    atributos += $"horas_estudio: '{cbHorasEstudio.Text}',";
+
+                if (!string.IsNullOrWhiteSpace(cbRelProf.Text))
+                    atributos += $"relacion_prof: '{cbRelProf.Text}',";
+
+                if (!string.IsNullOrWhiteSpace(cbAutoeficacia.Text))
+                    atributos += $"autoeficacia: '{cbAutoeficacia.SelectedIndex}',";
+
+                if (!string.IsNullOrWhiteSpace(cbMotEstudios.Text))
+                {
+                    atributos += $"mot_estudios: '{cbMotEstudios.SelectedIndex}',";
+                    MessageBox.Show(cbMotEstudios.SelectedIndex.ToString());
+                }
+
+                if (!string.IsNullOrWhiteSpace(cbMotAsignatura.Text))
+                    atributos += $"mot_asignatura: '{cbMotAsignatura.SelectedIndex}',";
+
+                string query_prof = $"MATCH ((a{{{atributos.TrimEnd(',')}}})-[r:CERCA_DE{{hora:'{hora}'}}]-(b:Profesor)) RETURN a.nombre AS nombre1, r.rssi AS rssi, r.hora AS hora, b.nombre AS nombre2";
+                result = session.Run(query_prof);
+                foreach (var record in result)
+                    g.AddEdge(new TaggedEdge<string, string>(record["nombre1"].As<string>(), record["nombre2"].As<string>(), record["rssi"].As<string>()));
+
+                string query_stud = $"MATCH ((a{{{atributos.TrimEnd(',')}}})-[r:CERCA_DE{{hora:'{hora}'}}]-(b{{{atributos.TrimEnd(',')}}})) RETURN a.nombre AS nombre1, r.rssi AS rssi, r.hora AS hora, b.nombre AS nombre2";
+                result = session.Run(query_stud);
                 foreach (var record in result)
                     g.AddEdge(new TaggedEdge<string, string>(record["nombre1"].As<string>(), record["nombre2"].As<string>(), record["rssi"].As<string>()));
 
@@ -186,78 +228,6 @@ namespace graphvisualization
                 listAlumnos.DataSource = _peopleList;
                 grafoPicBox.Tag = hora;
 
-                return g;
-            }
-        }
-
-        public AdjacencyGraph<string, TaggedEdge<string, string>> Neo4jQuery(string atributo, string hora)
-        {
-            IResult result;
-            string nombre;
-            string interest;
-            List<string> interests = new List<string>();
-            using (var driver = GraphDatabase.Driver("bolt://localhost", AuthTokens.Basic("user", "password")))
-            using (var session = driver.Session())
-            {
-                var g = new AdjacencyGraph<string, TaggedEdge<string, string>>();
-
-                result = session.Run($"MATCH (n:Profesor) " +
-                    $"RETURN n.nombre AS nombre, n.mac AS mac, n.area AS area, n.asignatura AS asignatura");
-                foreach (var record in result)
-                {
-                    nombre = record["nombre"].As<string>();
-                    g.AddVertex(nombre);
-                    if (!_peopleDict.ContainsKey(nombre))
-                    {
-                        _peopleDict.Add(nombre,
-                        new Teacher(record["mac"].As<string>(), nombre, record["area"].As<string>(), record["asignatura"].As<string>()));
-                    }
-                    }
-
-                result = session.Run($"MATCH (n:Alumno) " +
-                    $"RETURN n.nombre AS nombre, n.mac AS mac, n.edad AS edad, n.genero AS genero, n.procedencia AS procedencia," +
-                    $" n.intereses AS intereses, n.autoeficacia AS autoeficacia, n.mot_estudios AS mot_estudios, n.mot_asignatura AS mot_asignatura, n.extraversion AS extraversion," +
-                    $" n.nota AS nota, n.dias_estudio AS dias_estudio, n.horas_estudio AS horas_estudio, n.asistencia AS asistencia, n.relacion_prof AS relacion_prof");
-                foreach (var record in result)
-                {
-                    foreach (var inter in record["intereses"].As<List<string>>())
-                    {
-                        interest = inter.As<string>();
-                        if (!interests.Contains(interest))
-                        {
-                            interests.Add(interest);
-                        }
-                    }
-
-                    nombre = record["nombre"].As<string>();
-                    g.AddVertex(nombre + ": " + record[atributo].As<string>());
-                    if (!_peopleDict.ContainsKey(nombre))
-                    {
-                        _peopleDict.Add(nombre,
-                        new Student(record["mac"].As<string>(), nombre, record["edad"].As<string>(), record["genero"].As<string>(), record["procedencia"].As<string>(),
-                                    interests, record["autoeficacia"].As<string>(), record["mot_estudios"].As<string>(), record["mot_asignatura"].As<string>(), record["extraversion"].As<string>(),
-                                    record["nota"].As<string>(), record["dias_estudio"].As<string>(), record["horas_estudio"].As<string>(), record["asistencia"].As<string>(), record["relacion_prof"].As<string>()));
-                    }
-                    
-                }
-
-                result = session.Run($"MATCH ((a:Profesor)-[r:CERCA_DE{{hora:'{hora}'}}]-(b:Alumno)) " +
-                    $"RETURN a.nombre AS nombre_prof, r.rssi AS rssi, r.hora AS hora, b.nombre AS nombre_alum, b.{atributo} AS {atributo}");
-                foreach (var record in result)
-                    g.AddEdge(new TaggedEdge<string, string>(record["nombre_alum"].As<string>() + ": " + record[atributo].As<string>(), record["nombre_prof"].As<string>(), record["rssi"].As<string>()));
-
-                result = session.Run($"MATCH ((a:Alumno)-[r:CERCA_DE{{hora:'{hora}'}}]->(b:Alumno)) " +
-                    $"RETURN a.nombre AS nombre1, a.{atributo} AS {atributo}1, r.rssi AS rssi, r.hora AS hora, b.nombre AS nombre2, b.{atributo} AS {atributo}2");
-                foreach (var record in result)
-                    g.AddEdge(new TaggedEdge<string, string>(record["nombre1"].As<string>()+": "+record[atributo + "1"].As<string>(), record["nombre2"].As<string>() + ": " + record[atributo + "2"].As<string>(), record["rssi"].As<string>()));
-
-                foreach (var person in _peopleDict.Keys)
-                {
-                    if(!_peopleList.Contains(person))
-                        _peopleList.Add(person);
-                }
-                listAlumnos.DataSource = _peopleList;
-                grafoPicBox.Tag = hora;
                 return g;
             }
         }
@@ -304,7 +274,7 @@ namespace graphvisualization
             } else if (hour<8) {
                 hour = 8;
             }
-            _personAtribute = "nombre";
+
             DrawGraph(Neo4jQuery(hour.ToString()));
             
             zoomBar.Minimum = 1;
@@ -312,6 +282,22 @@ namespace graphvisualization
             zoomBar.SmallChange = 1;
             zoomBar.LargeChange = 1;
             zoomBar.UseWaitCursor = false;
+
+            string[] genero = {"","Hombre","Mujer","Prefiero no decirlo"};
+            string[] asistencia = {"", "No asisto a clases", "Muy poco frecuente", "Poco frecuente", "Frecuente", "Muy frecuente" };
+            string[] likert = { "", "Totalmente en desacuerdo", "En desacuerdo", "Ni acuerdo ni desacuerdo", "De acuerdo", "Totalmente de acuerdo" };
+            string[] dias = {"", "Ninguno", "Entre 1 y 3 días", "Entre 3 y 5 días", "Entre 5 y 6 días", "Todos los días" };
+            string[] horas = {"", "Menos de 1 hora", "Entre 1 y 2 horas", "Entre 3 y 4 horas", "Entre 5 y 6 horas", "Más de 6 horas" };
+            string[] relacion_prof = {"", "Muy mala", "Mala", "Mejorable", "Buena", "Muy buena" };
+
+            cbGenero.Items.AddRange(genero);
+            cbAsistencia.Items.AddRange(asistencia);
+            cbAutoeficacia.Items.AddRange(likert);
+            cbDiasEstudio.Items.AddRange(dias);
+            cbHorasEstudio.Items.AddRange(horas);
+            cbMotEstudios.Items.AddRange(likert);
+            cbMotAsignatura.Items.AddRange(likert);
+            cbRelProf.Items.AddRange(relacion_prof);
         }
 
         public Image PictureBoxZoom(Image img, Size size)
@@ -333,100 +319,9 @@ namespace graphvisualization
 
         private void timeBar_Scroll(object sender, EventArgs e)
         {
-            if (_personAtribute == "nombre")
-            {
-                DrawGraph(Neo4jQuery(timeBar.Value.ToString()));
-            }
-            else
-            {
-                DrawGraph(Neo4jQuery(_personAtribute, timeBar.Value.ToString()));
-            }
+            DrawGraph(Neo4jQuery(timeBar.Value.ToString()));
         }
-
-        private void nombreButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "nombre";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(hour.ToString()));
-        }
-
-        private void horasEstudButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "horas_estudio";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void motEstudButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "mot_estudios";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void edadButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "edad";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void generoButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "genero";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void extraversButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "extraversion";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void notaButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "nota";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void asistenciaButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "asistencia";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void autoeficaciaButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "autoeficacia";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void motAsignButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "mot_asignatura";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void díasEstudButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "dias_estudio";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
-        private void relacionProfButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _personAtribute = "relacion_prof";
-            var hour = grafoPicBox.Tag;
-            DrawGraph(Neo4jQuery(_personAtribute, hour.ToString()));
-        }
-
+        
         private void eliminrBBDDButton_Click(object sender, EventArgs e)
         {
             using (var driver = GraphDatabase.Driver("bolt://localhost", AuthTokens.Basic("user", "password")))
@@ -528,6 +423,12 @@ namespace graphvisualization
             this.Dispose();
             this.Close();
             Application.Exit();
+        }
+
+        private void filtrarButton_Click(object sender, EventArgs e)
+        {
+            var hour = grafoPicBox.Tag;
+            DrawGraph(Neo4jQuery(hour.ToString()));
         }
     }
 }

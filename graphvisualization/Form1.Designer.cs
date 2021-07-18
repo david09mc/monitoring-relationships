@@ -37,18 +37,29 @@ namespace graphvisualization
             this.alumnosGroupBox = new System.Windows.Forms.GroupBox();
             this.listAlumnos = new System.Windows.Forms.ListBox();
             this.filtrosGroupBox = new System.Windows.Forms.GroupBox();
-            this.edadButton = new System.Windows.Forms.RadioButton();
-            this.motEstudButton = new System.Windows.Forms.RadioButton();
-            this.motAsignButton = new System.Windows.Forms.RadioButton();
-            this.autoeficaciaButton = new System.Windows.Forms.RadioButton();
-            this.relacionProfButton = new System.Windows.Forms.RadioButton();
-            this.díasEstudButton = new System.Windows.Forms.RadioButton();
-            this.horasEstudButton = new System.Windows.Forms.RadioButton();
-            this.notaButton = new System.Windows.Forms.RadioButton();
-            this.asistenciaButton = new System.Windows.Forms.RadioButton();
-            this.extraversButton = new System.Windows.Forms.RadioButton();
-            this.generoButton = new System.Windows.Forms.RadioButton();
-            this.nombreButton = new System.Windows.Forms.RadioButton();
+            this.filtrarButton = new System.Windows.Forms.Button();
+            this.cbRelProf = new System.Windows.Forms.ComboBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.cbMotAsignatura = new System.Windows.Forms.ComboBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.cbMotEstudios = new System.Windows.Forms.ComboBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.cbHorasEstudio = new System.Windows.Forms.ComboBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.cbDiasEstudio = new System.Windows.Forms.ComboBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.cbAutoeficacia = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.tbNota = new System.Windows.Forms.TextBox();
+            this.cbAsistencia = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.tbExtroversion = new System.Windows.Forms.TextBox();
+            this.cbGenero = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tbEdad = new System.Windows.Forms.TextBox();
             this.panelTimeline = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -99,7 +110,7 @@ namespace graphvisualization
             // 
             this.finButton.Location = new System.Drawing.Point(191, 473);
             this.finButton.Name = "finButton";
-            this.finButton.Size = new System.Drawing.Size(100, 45);
+            this.finButton.Size = new System.Drawing.Size(128, 45);
             this.finButton.TabIndex = 4;
             this.finButton.Text = "Finalizar monitorización";
             this.finButton.UseVisualStyleBackColor = true;
@@ -109,7 +120,7 @@ namespace graphvisualization
             // 
             this.eliminrBBDDButton.Location = new System.Drawing.Point(35, 473);
             this.eliminrBBDDButton.Name = "eliminrBBDDButton";
-            this.eliminrBBDDButton.Size = new System.Drawing.Size(100, 45);
+            this.eliminrBBDDButton.Size = new System.Drawing.Size(125, 45);
             this.eliminrBBDDButton.TabIndex = 3;
             this.eliminrBBDDButton.Text = "Vaciar base de datos";
             this.eliminrBBDDButton.UseVisualStyleBackColor = true;
@@ -120,7 +131,7 @@ namespace graphvisualization
             this.alumnosGroupBox.Controls.Add(this.listAlumnos);
             this.alumnosGroupBox.Location = new System.Drawing.Point(3, -3);
             this.alumnosGroupBox.Name = "alumnosGroupBox";
-            this.alumnosGroupBox.Size = new System.Drawing.Size(353, 203);
+            this.alumnosGroupBox.Size = new System.Drawing.Size(353, 183);
             this.alumnosGroupBox.TabIndex = 2;
             this.alumnosGroupBox.TabStop = false;
             // 
@@ -132,174 +143,257 @@ namespace graphvisualization
             this.listAlumnos.ItemHeight = 15;
             this.listAlumnos.Location = new System.Drawing.Point(3, 19);
             this.listAlumnos.Name = "listAlumnos";
-            this.listAlumnos.Size = new System.Drawing.Size(347, 181);
+            this.listAlumnos.Size = new System.Drawing.Size(347, 161);
             this.listAlumnos.TabIndex = 0;
             this.listAlumnos.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listAlumnos_MouseClick);
             // 
             // filtrosGroupBox
             // 
-            this.filtrosGroupBox.Controls.Add(this.edadButton);
-            this.filtrosGroupBox.Controls.Add(this.motEstudButton);
-            this.filtrosGroupBox.Controls.Add(this.motAsignButton);
-            this.filtrosGroupBox.Controls.Add(this.autoeficaciaButton);
-            this.filtrosGroupBox.Controls.Add(this.relacionProfButton);
-            this.filtrosGroupBox.Controls.Add(this.díasEstudButton);
-            this.filtrosGroupBox.Controls.Add(this.horasEstudButton);
-            this.filtrosGroupBox.Controls.Add(this.notaButton);
-            this.filtrosGroupBox.Controls.Add(this.asistenciaButton);
-            this.filtrosGroupBox.Controls.Add(this.extraversButton);
-            this.filtrosGroupBox.Controls.Add(this.generoButton);
-            this.filtrosGroupBox.Controls.Add(this.nombreButton);
-            this.filtrosGroupBox.Location = new System.Drawing.Point(3, 199);
+            this.filtrosGroupBox.Controls.Add(this.filtrarButton);
+            this.filtrosGroupBox.Controls.Add(this.cbRelProf);
+            this.filtrosGroupBox.Controls.Add(this.label26);
+            this.filtrosGroupBox.Controls.Add(this.cbMotAsignatura);
+            this.filtrosGroupBox.Controls.Add(this.label25);
+            this.filtrosGroupBox.Controls.Add(this.cbMotEstudios);
+            this.filtrosGroupBox.Controls.Add(this.label24);
+            this.filtrosGroupBox.Controls.Add(this.cbHorasEstudio);
+            this.filtrosGroupBox.Controls.Add(this.label23);
+            this.filtrosGroupBox.Controls.Add(this.cbDiasEstudio);
+            this.filtrosGroupBox.Controls.Add(this.label22);
+            this.filtrosGroupBox.Controls.Add(this.cbAutoeficacia);
+            this.filtrosGroupBox.Controls.Add(this.label21);
+            this.filtrosGroupBox.Controls.Add(this.label20);
+            this.filtrosGroupBox.Controls.Add(this.tbNota);
+            this.filtrosGroupBox.Controls.Add(this.cbAsistencia);
+            this.filtrosGroupBox.Controls.Add(this.label19);
+            this.filtrosGroupBox.Controls.Add(this.label18);
+            this.filtrosGroupBox.Controls.Add(this.tbExtroversion);
+            this.filtrosGroupBox.Controls.Add(this.cbGenero);
+            this.filtrosGroupBox.Controls.Add(this.label17);
+            this.filtrosGroupBox.Controls.Add(this.label9);
+            this.filtrosGroupBox.Controls.Add(this.tbEdad);
+            this.filtrosGroupBox.Location = new System.Drawing.Point(3, 186);
             this.filtrosGroupBox.Name = "filtrosGroupBox";
-            this.filtrosGroupBox.Size = new System.Drawing.Size(353, 285);
+            this.filtrosGroupBox.Size = new System.Drawing.Size(353, 298);
             this.filtrosGroupBox.TabIndex = 1;
             this.filtrosGroupBox.TabStop = false;
             this.filtrosGroupBox.Text = "Filtros";
             // 
-            // edadButton
+            // filtrarButton
             // 
-            this.edadButton.AutoSize = true;
-            this.edadButton.Location = new System.Drawing.Point(188, 35);
-            this.edadButton.Name = "edadButton";
-            this.edadButton.Size = new System.Drawing.Size(51, 19);
-            this.edadButton.TabIndex = 12;
-            this.edadButton.TabStop = true;
-            this.edadButton.Text = "Edad";
-            this.edadButton.UseVisualStyleBackColor = true;
-            this.edadButton.CheckedChanged += new System.EventHandler(this.edadButton_CheckedChanged);
+            this.filtrarButton.BackColor = System.Drawing.Color.LightGray;
+            this.filtrarButton.FlatAppearance.BorderSize = 0;
+            this.filtrarButton.ForeColor = System.Drawing.Color.Black;
+            this.filtrarButton.Location = new System.Drawing.Point(188, 246);
+            this.filtrarButton.Name = "filtrarButton";
+            this.filtrarButton.Size = new System.Drawing.Size(128, 23);
+            this.filtrarButton.TabIndex = 36;
+            this.filtrarButton.Text = "Filtrar";
+            this.filtrarButton.UseVisualStyleBackColor = false;
+            this.filtrarButton.Click += new System.EventHandler(this.filtrarButton_Click);
             // 
-            // motEstudButton
+            // cbRelProf
             // 
-            this.motEstudButton.AutoSize = true;
-            this.motEstudButton.Location = new System.Drawing.Point(32, 235);
-            this.motEstudButton.Name = "motEstudButton";
-            this.motEstudButton.Size = new System.Drawing.Size(132, 19);
-            this.motEstudButton.TabIndex = 11;
-            this.motEstudButton.TabStop = true;
-            this.motEstudButton.Text = "Motivación estudios";
-            this.motEstudButton.UseVisualStyleBackColor = true;
-            this.motEstudButton.CheckedChanged += new System.EventHandler(this.motEstudButton_CheckedChanged);
+            this.cbRelProf.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRelProf.FormattingEnabled = true;
+            this.cbRelProf.Location = new System.Drawing.Point(32, 246);
+            this.cbRelProf.Name = "cbRelProf";
+            this.cbRelProf.Size = new System.Drawing.Size(125, 23);
+            this.cbRelProf.TabIndex = 35;
             // 
-            // motAsignButton
+            // label26
             // 
-            this.motAsignButton.AutoSize = true;
-            this.motAsignButton.Location = new System.Drawing.Point(188, 235);
-            this.motAsignButton.Name = "motAsignButton";
-            this.motAsignButton.Size = new System.Drawing.Size(143, 19);
-            this.motAsignButton.TabIndex = 10;
-            this.motAsignButton.TabStop = true;
-            this.motAsignButton.Text = "Motivación asignatura";
-            this.motAsignButton.UseVisualStyleBackColor = true;
-            this.motAsignButton.CheckedChanged += new System.EventHandler(this.motAsignButton_CheckedChanged);
+            this.label26.AutoSize = true;
+            this.label26.BackColor = System.Drawing.Color.Transparent;
+            this.label26.Location = new System.Drawing.Point(32, 232);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(125, 15);
+            this.label26.TabIndex = 34;
+            this.label26.Text = "Relación con profesor:";
             // 
-            // autoeficaciaButton
+            // cbMotAsignatura
             // 
-            this.autoeficaciaButton.AutoSize = true;
-            this.autoeficaciaButton.Location = new System.Drawing.Point(32, 155);
-            this.autoeficaciaButton.Name = "autoeficaciaButton";
-            this.autoeficaciaButton.Size = new System.Drawing.Size(91, 19);
-            this.autoeficaciaButton.TabIndex = 3;
-            this.autoeficaciaButton.TabStop = true;
-            this.autoeficaciaButton.Text = "Autoeficacia";
-            this.autoeficaciaButton.UseVisualStyleBackColor = true;
-            this.autoeficaciaButton.CheckedChanged += new System.EventHandler(this.autoeficaciaButton_CheckedChanged);
+            this.cbMotAsignatura.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMotAsignatura.FormattingEnabled = true;
+            this.cbMotAsignatura.Location = new System.Drawing.Point(188, 207);
+            this.cbMotAsignatura.Name = "cbMotAsignatura";
+            this.cbMotAsignatura.Size = new System.Drawing.Size(128, 23);
+            this.cbMotAsignatura.TabIndex = 33;
             // 
-            // relacionProfButton
+            // label25
             // 
-            this.relacionProfButton.AutoSize = true;
-            this.relacionProfButton.Location = new System.Drawing.Point(188, 155);
-            this.relacionProfButton.Name = "relacionProfButton";
-            this.relacionProfButton.Size = new System.Drawing.Size(140, 19);
-            this.relacionProfButton.TabIndex = 9;
-            this.relacionProfButton.TabStop = true;
-            this.relacionProfButton.Text = "Relación con profesor";
-            this.relacionProfButton.UseVisualStyleBackColor = true;
-            this.relacionProfButton.CheckedChanged += new System.EventHandler(this.relacionProfButton_CheckedChanged);
+            this.label25.AutoSize = true;
+            this.label25.BackColor = System.Drawing.Color.Transparent;
+            this.label25.Location = new System.Drawing.Point(188, 192);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(128, 15);
+            this.label25.TabIndex = 32;
+            this.label25.Text = "Motivación asignatura:";
             // 
-            // díasEstudButton
+            // cbMotEstudios
             // 
-            this.díasEstudButton.AutoSize = true;
-            this.díasEstudButton.Location = new System.Drawing.Point(32, 195);
-            this.díasEstudButton.Name = "díasEstudButton";
-            this.díasEstudButton.Size = new System.Drawing.Size(105, 19);
-            this.díasEstudButton.TabIndex = 7;
-            this.díasEstudButton.TabStop = true;
-            this.díasEstudButton.Text = "Días de estudio";
-            this.díasEstudButton.UseVisualStyleBackColor = true;
-            this.díasEstudButton.CheckedChanged += new System.EventHandler(this.díasEstudButton_CheckedChanged);
+            this.cbMotEstudios.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMotEstudios.FormattingEnabled = true;
+            this.cbMotEstudios.Location = new System.Drawing.Point(32, 207);
+            this.cbMotEstudios.Name = "cbMotEstudios";
+            this.cbMotEstudios.Size = new System.Drawing.Size(125, 23);
+            this.cbMotEstudios.TabIndex = 31;
             // 
-            // horasEstudButton
+            // label24
             // 
-            this.horasEstudButton.AutoSize = true;
-            this.horasEstudButton.Location = new System.Drawing.Point(188, 195);
-            this.horasEstudButton.Name = "horasEstudButton";
-            this.horasEstudButton.Size = new System.Drawing.Size(114, 19);
-            this.horasEstudButton.TabIndex = 6;
-            this.horasEstudButton.TabStop = true;
-            this.horasEstudButton.Text = "Horas de estudio";
-            this.horasEstudButton.UseVisualStyleBackColor = true;
-            this.horasEstudButton.CheckedChanged += new System.EventHandler(this.horasEstudButton_CheckedChanged);
+            this.label24.AutoSize = true;
+            this.label24.BackColor = System.Drawing.Color.Transparent;
+            this.label24.Location = new System.Drawing.Point(32, 192);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(117, 15);
+            this.label24.TabIndex = 30;
+            this.label24.Text = "Motivación estudios:";
             // 
-            // notaButton
+            // cbHorasEstudio
             // 
-            this.notaButton.AutoSize = true;
-            this.notaButton.Location = new System.Drawing.Point(188, 115);
-            this.notaButton.Name = "notaButton";
-            this.notaButton.Size = new System.Drawing.Size(87, 19);
-            this.notaButton.TabIndex = 5;
-            this.notaButton.TabStop = true;
-            this.notaButton.Text = "Nota media";
-            this.notaButton.UseVisualStyleBackColor = true;
-            this.notaButton.CheckedChanged += new System.EventHandler(this.notaButton_CheckedChanged);
+            this.cbHorasEstudio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbHorasEstudio.FormattingEnabled = true;
+            this.cbHorasEstudio.Location = new System.Drawing.Point(188, 166);
+            this.cbHorasEstudio.Name = "cbHorasEstudio";
+            this.cbHorasEstudio.Size = new System.Drawing.Size(128, 23);
+            this.cbHorasEstudio.TabIndex = 29;
             // 
-            // asistenciaButton
+            // label23
             // 
-            this.asistenciaButton.AutoSize = true;
-            this.asistenciaButton.Location = new System.Drawing.Point(32, 115);
-            this.asistenciaButton.Name = "asistenciaButton";
-            this.asistenciaButton.Size = new System.Drawing.Size(78, 19);
-            this.asistenciaButton.TabIndex = 4;
-            this.asistenciaButton.TabStop = true;
-            this.asistenciaButton.Text = "Asistencia";
-            this.asistenciaButton.UseVisualStyleBackColor = true;
-            this.asistenciaButton.CheckedChanged += new System.EventHandler(this.asistenciaButton_CheckedChanged);
+            this.label23.AutoSize = true;
+            this.label23.BackColor = System.Drawing.Color.Transparent;
+            this.label23.Location = new System.Drawing.Point(188, 152);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(99, 15);
+            this.label23.TabIndex = 28;
+            this.label23.Text = "Horas de estudio:";
             // 
-            // extraversButton
+            // cbDiasEstudio
             // 
-            this.extraversButton.AutoSize = true;
-            this.extraversButton.Location = new System.Drawing.Point(188, 75);
-            this.extraversButton.Name = "extraversButton";
-            this.extraversButton.Size = new System.Drawing.Size(90, 19);
-            this.extraversButton.TabIndex = 2;
-            this.extraversButton.TabStop = true;
-            this.extraversButton.Text = "Extroversión";
-            this.extraversButton.UseVisualStyleBackColor = true;
-            this.extraversButton.CheckedChanged += new System.EventHandler(this.extraversButton_CheckedChanged);
+            this.cbDiasEstudio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDiasEstudio.FormattingEnabled = true;
+            this.cbDiasEstudio.Location = new System.Drawing.Point(32, 166);
+            this.cbDiasEstudio.Name = "cbDiasEstudio";
+            this.cbDiasEstudio.Size = new System.Drawing.Size(125, 23);
+            this.cbDiasEstudio.TabIndex = 27;
             // 
-            // generoButton
+            // label22
             // 
-            this.generoButton.AutoSize = true;
-            this.generoButton.Location = new System.Drawing.Point(32, 75);
-            this.generoButton.Name = "generoButton";
-            this.generoButton.Size = new System.Drawing.Size(63, 19);
-            this.generoButton.TabIndex = 1;
-            this.generoButton.TabStop = true;
-            this.generoButton.Text = "Género";
-            this.generoButton.UseVisualStyleBackColor = true;
-            this.generoButton.CheckedChanged += new System.EventHandler(this.generoButton_CheckedChanged);
+            this.label22.AutoSize = true;
+            this.label22.BackColor = System.Drawing.Color.Transparent;
+            this.label22.Location = new System.Drawing.Point(32, 152);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(90, 15);
+            this.label22.TabIndex = 26;
+            this.label22.Text = "Días de estudio:";
             // 
-            // nombreButton
+            // cbAutoeficacia
             // 
-            this.nombreButton.AutoSize = true;
-            this.nombreButton.Location = new System.Drawing.Point(32, 35);
-            this.nombreButton.Name = "nombreButton";
-            this.nombreButton.Size = new System.Drawing.Size(69, 19);
-            this.nombreButton.TabIndex = 0;
-            this.nombreButton.TabStop = true;
-            this.nombreButton.Text = "Nombre";
-            this.nombreButton.UseVisualStyleBackColor = true;
-            this.nombreButton.CheckedChanged += new System.EventHandler(this.nombreButton_CheckedChanged);
+            this.cbAutoeficacia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAutoeficacia.FormattingEnabled = true;
+            this.cbAutoeficacia.Location = new System.Drawing.Point(188, 126);
+            this.cbAutoeficacia.Name = "cbAutoeficacia";
+            this.cbAutoeficacia.Size = new System.Drawing.Size(128, 23);
+            this.cbAutoeficacia.TabIndex = 25;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.BackColor = System.Drawing.Color.Transparent;
+            this.label21.Location = new System.Drawing.Point(188, 112);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(73, 15);
+            this.label21.TabIndex = 24;
+            this.label21.Text = "Autoeficacia";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.BackColor = System.Drawing.Color.Transparent;
+            this.label20.Location = new System.Drawing.Point(32, 71);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(72, 15);
+            this.label20.TabIndex = 23;
+            this.label20.Text = "Nota media:";
+            // 
+            // tbNota
+            // 
+            this.tbNota.Location = new System.Drawing.Point(32, 86);
+            this.tbNota.Name = "tbNota";
+            this.tbNota.Size = new System.Drawing.Size(125, 23);
+            this.tbNota.TabIndex = 22;
+            // 
+            // cbAsistencia
+            // 
+            this.cbAsistencia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAsistencia.FormattingEnabled = true;
+            this.cbAsistencia.Location = new System.Drawing.Point(32, 126);
+            this.cbAsistencia.Name = "cbAsistencia";
+            this.cbAsistencia.Size = new System.Drawing.Size(125, 23);
+            this.cbAsistencia.TabIndex = 21;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.BackColor = System.Drawing.Color.Transparent;
+            this.label19.Location = new System.Drawing.Point(32, 112);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(63, 15);
+            this.label19.TabIndex = 20;
+            this.label19.Text = "Asistencia:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.BackColor = System.Drawing.Color.Transparent;
+            this.label18.Location = new System.Drawing.Point(187, 27);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(75, 15);
+            this.label18.TabIndex = 19;
+            this.label18.Text = "Extroversión:";
+            // 
+            // tbExtroversion
+            // 
+            this.tbExtroversion.Location = new System.Drawing.Point(187, 42);
+            this.tbExtroversion.Name = "tbExtroversion";
+            this.tbExtroversion.Size = new System.Drawing.Size(129, 23);
+            this.tbExtroversion.TabIndex = 18;
+            // 
+            // cbGenero
+            // 
+            this.cbGenero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbGenero.FormattingEnabled = true;
+            this.cbGenero.Location = new System.Drawing.Point(188, 86);
+            this.cbGenero.Name = "cbGenero";
+            this.cbGenero.Size = new System.Drawing.Size(128, 23);
+            this.cbGenero.TabIndex = 17;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.BackColor = System.Drawing.Color.Transparent;
+            this.label17.Location = new System.Drawing.Point(188, 72);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(48, 15);
+            this.label17.TabIndex = 16;
+            this.label17.Text = "Género:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Location = new System.Drawing.Point(32, 27);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(36, 15);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "Edad:";
+            // 
+            // tbEdad
+            // 
+            this.tbEdad.Location = new System.Drawing.Point(32, 42);
+            this.tbEdad.Name = "tbEdad";
+            this.tbEdad.Size = new System.Drawing.Size(125, 23);
+            this.tbEdad.TabIndex = 13;
             // 
             // panelTimeline
             // 
@@ -602,21 +696,9 @@ namespace graphvisualization
         private System.Windows.Forms.Label mananaLabel;
         private System.Windows.Forms.Label mediaLabel;
         private System.Windows.Forms.Label tardeLabel;
-        private System.Windows.Forms.RadioButton motEstudButton;
-        private System.Windows.Forms.RadioButton motAsignButton;
-        private System.Windows.Forms.RadioButton relacionProfButton;
-        private System.Windows.Forms.RadioButton díasEstudButton;
-        private System.Windows.Forms.RadioButton horasEstudButton;
-        private System.Windows.Forms.RadioButton notaButton;
-        private System.Windows.Forms.RadioButton asistenciaButton;
-        private System.Windows.Forms.RadioButton autoeficaciaButton;
-        private System.Windows.Forms.RadioButton extraversButton;
-        private System.Windows.Forms.RadioButton generoButton;
-        private System.Windows.Forms.RadioButton nombreButton;
         private System.Windows.Forms.GroupBox alumnosGroupBox;
         private System.Windows.Forms.Button eliminrBBDDButton;
         private System.Windows.Forms.Button finButton;
-        private System.Windows.Forms.RadioButton edadButton;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
@@ -632,6 +714,29 @@ namespace graphvisualization
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cbRelProf;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.ComboBox cbMotAsignatura;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.ComboBox cbMotEstudios;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.ComboBox cbHorasEstudio;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.ComboBox cbDiasEstudio;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.ComboBox cbAutoeficacia;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox tbNota;
+        private System.Windows.Forms.ComboBox cbAsistencia;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox tbExtroversion;
+        private System.Windows.Forms.ComboBox cbGenero;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox tbEdad;
+        private System.Windows.Forms.Button filtrarButton;
     }
 }
 
