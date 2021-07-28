@@ -1,2 +1,0 @@
-COM5 ESP Board MAC Address:  24:A1:60:75:E4:68
-COM6 ESP Board MAC Address:  24:A1:60:75:E4:B0
